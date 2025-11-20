@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>discord clock</title>
+</head>
+<body style="
+  margin:0;
+  background:#000;
+  color:#fff;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:monospace;
+  font-size:6rem;   /* 여기서 크기 조절 */
+">
+    <div id="clock"></div>
+
+    <script type="module">
+        function updateClock() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2,"0");
+            const mm = String(now.getMinutes()).padStart(2,"0");
+            const ss = String(now.getSeconds()).padStart(2,"0");
+            document.getElementById("clock").textContent = `${hh}:${mm}:${ss}`;
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
