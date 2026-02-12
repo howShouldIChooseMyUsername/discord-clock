@@ -3,18 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>discord clock</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&display=swap" rel="stylesheet">
     <style>
+        /* 1. Jersey 15 로컬 파일 연결 */
+        @font-face {
+            font-family: 'Jersey15';
+            src: url('./Jersey15-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* 테마 변수 설정 */
         :root {
             --bg-color: #000;
             --text-color: #fff;
         }
+
+        /* 화이트 모드 변수 덮어쓰기 */
         body.white-mode {
             --bg-color: #fff;
             --text-color: #000;
         }
+
         body {
             margin: 0;
             background-color: var(--bg-color);
@@ -23,24 +32,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.3s, color 0.3s;
-            user-select: none;
-        }
-        #clock {
-            font-family: "Jersey 15", sans-serif;
+            font-family: 'Jersey15', sans-serif;
             font-size: 8rem;
-            cursor: pointer;
+            /* 부드러운 색상 전환 */
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none; /* 숫자 드래그 방지 */
         }
-        .jersey-15-regular {
-            font-family: "Jersey 15", sans-serif;
-            font-weight: 400;
-            font-style: normal;
+
+        #clock {
+            cursor: pointer; /* 클릭 가능하다는 표시 */
         }
     </style>
 </head>
 <body>
-
-    <div id="clock" class="jersey-15-regular">00:00:00</div>
+    <div id="clock"></div>
 
     <script>
         const clockBtn = document.getElementById('clock');
@@ -54,18 +59,24 @@
             clockBtn.textContent = `${hh}:${mm}:${ss}`;
         }
 
+        // 2. 초기 테마 설정 (저장된 값 불러오기)
+        // script를 하단에 배치하여 DOM 로드 문제를 방지했습니다.
         if (localStorage.getItem('theme') === "white") {
             document.body.classList.add('white-mode');
         }
 
+        // 3. 시계 클릭 시 테마 토글
         clockBtn.addEventListener('click', () => {
             document.body.classList.toggle('white-mode');
+            
+            // 현재 상태 저장
             const isWhite = document.body.classList.contains('white-mode');
             localStorage.setItem('theme', isWhite ? 'white' : 'dark');
         });
 
-        setInterval(updateClock, 1000);
+        // 실행
         updateClock();
+        setInterval(updateClock, 1000);
     </script>
 </body>
 </html>
