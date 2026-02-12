@@ -3,31 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>discord clock</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000;
+            --text-color: #fff;
+        }
+        body.white-mode {
+            --bg-color: #fff;
+            --text-color: #000;
+        }
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+        }
+        #clock {
+            font-family: "Jersey 15", sans-serif;
+            font-size: 8rem;
+            cursor: pointer;
+        }
+        .jersey-15-regular {
+            font-family: "Jersey 15", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
 </head>
-<body style="
-  margin:0;
-  background:#000;
-  color:#fff;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-family:monospace;
-  font-size:6rem;   /* 여기서 크기 조절 */
-">
-    <div id="clock"></div>
+<body>
 
-    <script type="module">
+    <div id="clock" class="jersey-15-regular">00:00:00</div>
+
+    <script>
+        const clockBtn = document.getElementById('clock');
+
+        // 1. 시계 업데이트 함수
         function updateClock() {
             const now = new Date();
-            const hh = String(now.getHours()).padStart(2,"0");
-            const mm = String(now.getMinutes()).padStart(2,"0");
-            const ss = String(now.getSeconds()).padStart(2,"0");
-            document.getElementById("clock").textContent = `${hh}:${mm}:${ss}`;
+            const hh = String(now.getHours()).padStart(2, "0");
+            const mm = String(now.getMinutes()).padStart(2, "0");
+            const ss = String(now.getSeconds()).padStart(2, "0");
+            clockBtn.textContent = `${hh}:${mm}:${ss}`;
         }
 
-        updateClock();
+        if (localStorage.getItem('theme') === "white") {
+            document.body.classList.add('white-mode');
+        }
+
+        clockBtn.addEventListener('click', () => {
+            document.body.classList.toggle('white-mode');
+            const isWhite = document.body.classList.contains('white-mode');
+            localStorage.setItem('theme', isWhite ? 'white' : 'dark');
+        });
+
         setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>
